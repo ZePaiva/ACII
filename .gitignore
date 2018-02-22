@@ -1,0 +1,5 @@
+## post-compile files
+*.elf
+*.hex
+*.map
+*.o
