@@ -1,0 +1,92 @@
+#! /bin/bash
+#
+# bash script to compile a pic32 C, C++, or asm program
+#
+# TOS, January 2011, February 2012, October 2013
+#
+
+PICDIR=/opt/pic32mx
+USAGE="usage: $0 c_or_cpp_or_asm_file [c_or_cpp_or_asm_file ...]"
+
+#
+# just in case, remove all .o, .elf, .hex, .map, and .hex.s files
+#
+rm -f *.o *.elf *.hex *.map *.hex.s
+
+#
+# stop immediately if an error is encountered
+#
+set -e
+
+#
+# check command line
+#
+if (( $# == 0 )); then
+  echo $USAGE
+  exit 0
+fi
+
+#
+# determine the name of the binary file
+#
+f=$1
+case $f in
+  (*.c)
+    g=${f/%.c/}
+    ;;
+  (*.cpp)
+    g=${f/%.cpp/}
+    ;;
+  (*.s)
+    g=${f/%.s/}
+    ;;
+  (*)
+    echo -e "\nunknown file type ($f)\n\n"
+    echo $USAGE
+    exit 1
+    ;;
+esac
+
+#
+# convert .c, .cpp, and .s file(s) to .o
+#
+obj=
+for f in $*; do
+  echo "*** compiling $f ..."
+  case $f in
+    (*.c)
+      $PICDIR/bin/pic32-gcc -Wall -O2 -mprocessor=32MX795F512H -I$PICDIR/include -c $f -o ${f/%.c/.o}
+      obj="$obj ${f/%.c/.o}"
+      ;;
+    (*.cpp)
+      $PICDIR/bin/pic32-g++ -Wall -O2 -mprocessor=32MX795F512H -I$PICDIR/include -c $f -o ${f/%.cpp/.o}
+      obj="$obj ${f/%.cpp/.o}"
+      ;;
+    (*.s)
+      $PICDIR/bin/pic32-gcc -Wall -O2 -mprocessor=32MX795F512H -I$PICDIR/include -c $f -o ${f/%.s/.o}
+      obj="$obj ${f/%.s/.o}"
+      ;;
+    (*)
+      echo -e "\nunknown file type ($f)\n"
+      exit 1
+      ;;
+  esac
+done
+
+#
+# link all .o files
+#
+echo "*** linking $g ..."
+$PICDIR/bin/pic32-ld  $obj -o $g.elf -L$PICDIR/lib -L$PICDIR/lib/gcc/pic32mx/3.4.4 -ldetpic32 -lgcc -lm -lc -lsupc++ -lxcpp -Map $g.map
+
+#
+# convert .elf to .hex
+#
+echo "*** converting to .hex ..."
+$PICDIR/bin/pic32-bin2hex $g.elf
+
+#
+# done
+#
+echo "*** done ($g.hex created with success)"
+exit 0
