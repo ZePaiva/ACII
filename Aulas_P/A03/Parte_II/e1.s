@@ -18,9 +18,12 @@ main:
   sw $s1, 8($sp)        # data to show
   sw $s2, 12($sp)       # counter
   sw $s3, 16($sp)       # aux for johnson counter / LATE-put
+  
+#  uncomment when testing all except ring counter
+#  li $s2, 0
 
-  li $s2, 0
-
+#  uncomment only when testing ring counter
+  li $s2, 1
   #RB0-3 -> input
   lui $s0, SFR_BASE_HI
   lw $s1, TRISE($s0)
@@ -169,7 +172,7 @@ while_m:
   lw $s1, PORTB($s0)         # get all RB bits
   andi $s1, $s1, 0x0002      # isolate port RB1
   beq $s1, 0x0002, left_ring
-  beq $s2, $0, right_reset   # if rez = 0 then reset to 8 
+  beq $s2, 0x0001, right_reset   # if rez = 0 then reset to 8 
   srl $s2, $s2, 1            # else rez >> 1
   j j2while_ring
 
@@ -178,17 +181,12 @@ right_reset:
   j j2while_ring
 
 left_ring:
-  beq $s2, 0x08, left_reset
-  beq $s2, $0, left_init
+  beq $s2, 0x0008, left_reset
   sll $s2, $s2, 1
   j j2while_ring
 
 left_reset:
-  li $s2, 0
-  j j2while_ring
-
-left_init:
-  li $s2, 1
+  li $s2, 0x01
   j j2while_ring
 
 j2while_ring:
