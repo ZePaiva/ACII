@@ -19,11 +19,12 @@
   .globl main
 
 main:
-  addiu $sp, $sp, -16
+  addiu $sp, $sp, -20
   sw $ra, 0($sp)
   sw $s0, 4($sp)
   sw $s1, 8($sp)
   sw $s2, 12($sp)
+  sw $s3, 16($sp)
 
   # $s0 -> v
   li $s0, 0
@@ -33,6 +34,9 @@ main:
   sw $s2, TRISE($s1)
   
 while:
+  lw $s3, LATE($s1)
+  andi $s3, $s3, 0x0000
+  or $s0, $s0, $s3
   sw $s0, LATE($s1)
   li $a0, 500
   jal delay
@@ -44,7 +48,8 @@ end:
   lw $s0, 4($sp)
   lw $s1, 8($sp)
   lw $s2, 12($sp)
-  addiu $sp, $sp, 16
+  lw $s3, 16($sp)
+  addiu $sp, $sp, 20
   jr $ra
 
 delay:

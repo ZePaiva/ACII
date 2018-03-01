@@ -23,7 +23,11 @@ inf_loop:
   # read RB0 -> bit 0
   lw $t2, PORTB($t1) 
   # change bit
-  not $t2, $t2
+  andi $t2, $t2, 0x0001
+  xor $t2, $t2, 0x0001
+  lw $t3, LATE($t1)
+  andi $t3, $t3, 0xFFFE
+  or $t2, $t3, $t2
   # write RE0 -> bit 0
   sw $t2, LATE($t1)
   j inf_loop
