@@ -55,7 +55,7 @@ void delay (int ms)
 void IOconf()
 {
   TRISE = TRISE & 0xFFF0; // REx -> output allowed
-  TRISB = TRISB & 0xFFFF; // RBx -> input allowed
+  TRISB = TRISB | 0x000F; // RBx -> input allowed
   LATE = LATE & 0xFFF0;   // REx -> output 
   PORTB = PORTB & 0xFFF0; // RBx -> input 
 }
