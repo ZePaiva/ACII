@@ -1,0 +1,15 @@
+# export path so you can use simpler commands
+if [ -d /opt/pic32mx/bin ]; then
+  export PATH=$PATH:/opt/pic32mx/bin
+fi
+
+# easier to send to terminal
+picterm() {
+  ldpic32 $1
+  pterm
+}
+
+# autocompile my_func.c so you can use my_funcs.h
+piccomp() {
+  pcompile $1 /opt/pic32mx/include/my_funcs.c
+}
