@@ -60,8 +60,7 @@ void send2displays(unsigned char value)
     LATDbits.LATD6 = 0;
 
     hexCode = display7Scodes[digit_low];
-    LATB = (LATB & 0x0000) | hexCode;
-    LATB <<= 8;
+    LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
     if (!pointFlag)
       LATBbits.LATB15 = 1;
     else
@@ -73,8 +72,7 @@ void send2displays(unsigned char value)
     LATDbits.LATD6 = 1;
 
     hexCode = display7Scodes[digit_high];
-    LATB = (LATB & 0x0000) | hexCode;
-    LATB <<= 8;
+    LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
     if (pointFlag)
       LATBbits.LATB15 = 1;
     else
