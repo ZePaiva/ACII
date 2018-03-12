@@ -1,12 +1,12 @@
 #include<detpic32.h>
-#include"my_funcs.h"
+#include<my_funcs.h>
 
 unsigned char toBcd(unsigned char value)
 {
   return ((value / 10) << 4) + value % 10;
 }
 
-void send2displays(unsigned char value)
+void send2displays(unsigned char value, unsigned char point_pip)
 {
   static const char display7Scodes[] = { 
     0x3F, 0x06, 0x5B, 0X4F, 0x66, 0x6D, 0X7D, 0X07, 
@@ -25,6 +25,9 @@ void send2displays(unsigned char value)
 
     hexCode = display7Scodes[digit_low];
     LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
+
+    if(point_pip == 1 && value % 2 == 0)
+      LATBbits.LATB15 = 1;
   }
   else
   {
@@ -33,6 +36,9 @@ void send2displays(unsigned char value)
 
     hexCode = display7Scodes[digit_high];
     LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
+  
+    if(point_pip == 1 && value % 2 == 1)
+      LATBbits.LATB15 = 1;
   }
 
   displayFlag = !displayFlag;
