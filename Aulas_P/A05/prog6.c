@@ -31,6 +31,7 @@ int main()
       sum /= SAMPLES;
       voltage = VOLTAGE(sum);
       j = 0;
+      IFS1bits.AD1IF = 1;
     }
     
     if (voltage < 10)
