@@ -14,10 +14,10 @@ int main(void)
   LATB = LATB & 0x00FF;
 
   //D5-6 out
-  TRISDbits.TRISD5 = 0;
-  TRISDbits.TRISD6 = 0;
   LATDbits.LATD5 = 0;
   LATDbits.LATD6 = 1;
+  TRISDbits.TRISD5 = 0;
+  TRISDbits.TRISD6 = 0;
 
   unsigned char val = 0;
 
@@ -29,6 +29,8 @@ int main(void)
     send2displays(val);
     val++;
   }
+
+  return 0;
 }
 
 void send2displays(unsigned char value)

@@ -26,6 +26,7 @@ inf_loop:
   lw $t3, LATE($t1)
   andi $t3, $t3, 0xFFFE
   or $t2, $t2, $t3
+  
   # write RE0 -> bit 0
   sw $t2, LATE($t1)
   j inf_loop

@@ -18,10 +18,10 @@ int main(void)
   LATB = LATB & 0x00FF;
 
   //D5-6 out
-  TRISDbits.TRISD5 = 0;
-  TRISDbits.TRISD6 = 0;
   LATDbits.LATD5 = 0;
   LATDbits.LATD6 = 1;
+  TRISDbits.TRISD5 = 0;
+  TRISDbits.TRISD6 = 0;
 
   unsigned char toPut; 
   char hexCode;
@@ -30,9 +30,10 @@ int main(void)
   {
     toPut = PORTB & 0x000F;
     hexCode = display7Scodes[toPut];
-    LATB = (LATB & 0x0000) | hexCode;
-    LATB <<= 8;
+    LATB = (LATB & 0x0000) | ((int)hexCode <<8);
   }
+
+  return 0;
 }
 
 void delay (int ms)

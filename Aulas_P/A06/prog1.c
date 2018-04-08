@@ -39,6 +39,8 @@ void _int_(27) isr_adc()
   int *bp = (int *)(&ADC1BUF0);
   printInt(*bp, 16 | 3 << 16);
   printStr("\n");
+
+  // reset conversion
   AD1CON1bits.ASAM = 1;
   IFS1bits.AD1IF = 0;
 }

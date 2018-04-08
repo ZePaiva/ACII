@@ -23,6 +23,8 @@ int main(void)
   {
     send2displays(0x00F0);
   }
+
+  return 0;
 }
 
 void send2displays(unsigned char value)

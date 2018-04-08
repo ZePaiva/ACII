@@ -14,6 +14,7 @@ int main()
   AD1CON2bits.SMPI = 0;
   AD1CON3bits.SAMC = 16;
   AD1CON1bits.ON = 1;
+
   while(1)
   {
     LATBbits.LATB6 = 1;
@@ -23,6 +24,8 @@ int main()
     aux = ADC1BUF0;
     IFS1bits.AD1IF = 0;
   }
+
+  return 0;
 }
 
 /*

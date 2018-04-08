@@ -21,13 +21,16 @@
 main:
   li $t0, 0
 whileOut:
-  beq $t0, 10, endWhileOut
+
+# delay for 200 ms
 while:
   li $v0, readCoreTimer
   syscall
   blt $v0,  4000000, while
   li $v0, resetCoreTimer
   syscall
+
+  # increment and print
   addi $t0, $t0, 1
   li $v0, printInt10
   move $a0, $t0
@@ -35,6 +38,8 @@ while:
   li $a0, ' '
   li $v0, putchar
   syscall
+
+  # make a never-ending cycle
   j whileOut
-endWhileOut:
-  jr $ra
+
+jr $ra

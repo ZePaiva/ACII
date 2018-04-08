@@ -5,10 +5,10 @@ void delay(int ms);
 int main()
 {
   unsigned char segment;
-  TRISDbits.TRISD5 = 0;
-  TRISDbits.TRISD6 = 0;
   LATDbits.LATD6 = 1;
   LATDbits.LATD5 = 0;
+  TRISDbits.TRISD5 = 0;
+  TRISDbits.TRISD6 = 0;
 
   TRISB = TRISB & 0x00FF;
 
@@ -26,6 +26,8 @@ int main()
       segment <<= 1;
     }
   }
+
+  return 0;
 }
 
 void delay (int ms)

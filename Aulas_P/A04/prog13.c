@@ -12,10 +12,10 @@ int main(void)
   LATB = LATB & 0x00FF;
 
   //D5-6 out
-  TRISDbits.TRISD5 = 0;
-  TRISDbits.TRISD6 = 0;
   LATDbits.LATD5 = 0;
   LATDbits.LATD6 = 1;
+  TRISDbits.TRISD5 = 0;
+  TRISDbits.TRISD6 = 0;
 
   unsigned char val = 0;
   int i;
@@ -26,7 +26,7 @@ int main(void)
     i = 0;
     do{
       delay(20);
-      send2displays(val);
+      send2displays(val, 0);
     } while (++i < 10);
     val++;
     val %= 256;
@@ -41,4 +41,5 @@ int main(void)
     val++;
     val %= 256;
   }
+  return 0;
 }

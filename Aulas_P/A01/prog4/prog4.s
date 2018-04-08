@@ -30,11 +30,11 @@ msg5:  .asciiz "\nValor lido em base 10 (signed): "
 
 main:
 while:
-  la $a0, msg1
+  la $a0, msg1              # print first message
   ori $v0, $0, printStr
   syscall
 
-  ori $v0, $0, readInt10
+  ori $v0, $0, readInt10    # read integer in base 10
   syscall
 
   move $t0, $v0
@@ -43,7 +43,7 @@ while:
   syscall
   move $a0, $t0
   li $a1, 2
-  ori $v0, $0, printInt
+  ori $v0, $0, printInt     # print integer in base 2
   syscall
 
   la $a0, msg3
@@ -52,7 +52,7 @@ while:
   move $0, $t0
   move $a0, $t0
   li $a1, 16
-  ori $v0, $0, printInt
+  ori $v0, $0, printInt     # print integer in base 16
   syscall
 
   la $a0, msg4
@@ -60,15 +60,17 @@ while:
   syscall
   move $a0, $t0
   li $a1, 10
-  ori $v0, $0, printInt
+  ori $v0, $0, printInt     # print integer in base 10 (unsigned)
   syscall
 
   la $a0, msg5
   ori $v0, $0, printStr
   syscall
   move $a0, $t0
-  ori $v0, $0, printInt
+  ori $v0, $0, printInt     # print integer in base 10 (signed)
   syscall
+
+  j while                   # to keep it a never-ending cycle 
 
 end:
   jr $ra

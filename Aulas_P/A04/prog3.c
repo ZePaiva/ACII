@@ -63,7 +63,7 @@ int main (void)
         break;
 
       case '.':
-        LATBbits.LATB15 = 15;
+        LATBbits.LATB15 = 1;
         break;
 
       default:

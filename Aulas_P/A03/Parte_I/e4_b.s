@@ -19,6 +19,7 @@
   .globl main
 
 main:
+  # store context in stack
   addiu $sp, $sp, -20
   sw $ra, 0($sp)
   sw $s0, 4($sp)
@@ -34,6 +35,7 @@ main:
   sw $s2, TRISE($s1)
   
 while:
+  # read - modify - write for LAT-E bit 0
   lw $s3, LATE($s1)
   andi $s3, $s3, 0x0000
   or $s0, $s0, $s3
@@ -44,6 +46,7 @@ while:
   j while
 
 end:
+  # restore context from stack
   lw $ra, 0($sp)
   lw $s0, 4($sp)
   lw $s1, 8($sp)
@@ -52,6 +55,9 @@ end:
   addiu $sp, $sp, 20
   jr $ra
 
+###################################################################################################
+# delay
+# $a0 -> miliseconds to wait
 delay:
 
 for:

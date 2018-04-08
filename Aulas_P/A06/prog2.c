@@ -36,9 +36,14 @@ void IOConfig(void)
 
 void _int_(27) isr_adc()
 {
+  // reset flag
   LATBbits.LATB6 = 0;
   printInt(ADC1BUF0, 16 | 3 << 16);
+  
+  // set flag
   LATBbits.LATB6 = 1;
+
+  // reset conversion
   AD1CON1bits.ASAM = 1;
   IFS1bits.AD1IF = 0;
 }

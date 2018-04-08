@@ -101,30 +101,33 @@ main:
   la $a0, msg3
   li $v0, printStr
   syscall
-  la $a0, str1
+  la $a0, str1                # get length of string 1
   jal strlen
   move $a0, $v0
   ori $v0, $0, printInt10
-  syscall
+  syscall                     # print length
 
+  # print length of string 2
   la $a0, msg4
   li $v0, printStr
   syscall
-  la $a0, str2
+  la $a0, str2                # get length of string 2
   jal strlen
   move $a0, $v0
   ori $v0, $0, printInt10
-  syscall
+  syscall                     # print length
 
-  la $a0, str3
+  # concatenate string 1 and 2 in string 3
+  la $a0, str3                # load arguments to copy a0 -> dest(3) / a1 -> src(1)
   la $a1, str1
   jal strcpy
-  la $a1, str2
+  la $a1, str2                # load arguments to concatenate a0 ->dest(3) / a1 -> src(2)
   jal strcat
   move $a0, $v0
   ori $v0, $0, printStr
   syscall
 
+  # compare string 1 and 2
   la $a0, str1
   la $a1, str2
   jal strcmp

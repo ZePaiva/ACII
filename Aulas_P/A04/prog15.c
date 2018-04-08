@@ -31,4 +31,6 @@ int main(void)
     val++;
     val %= 60;
   }
+
+  return 0;
 }
