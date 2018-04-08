@@ -10,6 +10,7 @@ Suporte teórico da UC
 ### Dev_Tools
 Contém todas as ferramentas para compilação a partir de código c (.c) e assembly (.asm)
 Contém o ficheiro my_funcs.c (diretório pic32mx/include/) com:
+	'''
 	- funções:
 		- unsigned char toBcd (unsigned char value) -> converte de binário/hexadecimal para decimal
 		- void delay (int n) -> cria um atraso de n milissegundos 
@@ -18,6 +19,8 @@ Contém o ficheiro my_funcs.c (diretório pic32mx/include/) com:
 	- macros:
 		- VOLTAGE(V) obtem o valor da voltagem a partir da média dos valores analógicos
 
+	'''
+	
 ### Guiões
 Contém todos os guiões de exercícios fornecidos na UC
 
