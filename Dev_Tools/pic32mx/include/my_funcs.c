@@ -6,7 +6,7 @@ unsigned char toBcd(unsigned char value)
   return ((value / 10) << 4) + value % 10;
 }
 
-void send2displays(unsigned char value, unsigned char point_pip)
+void send2displays(unsigned char value, unsigned char dec_point)
 {
   static const char display7Scodes[] = { 
     0x3F, 0x06, 0x5B, 0X4F, 0x66, 0x6D, 0X7D, 0X07, 
@@ -18,6 +18,7 @@ void send2displays(unsigned char value, unsigned char point_pip)
   unsigned char digit_high = (value & 0xF0) >> 4;
   char hexCode;
 
+  // left display
   if (displayFlag)
   {
     LATDbits.LATD5 = 1;
@@ -25,10 +26,8 @@ void send2displays(unsigned char value, unsigned char point_pip)
 
     hexCode = display7Scodes[digit_low];
     LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
-
-    if(point_pip == 1 && value % 2 == 0)
-      LATBbits.LATB15 = 1;
   }
+  // right display
   else
   {
     LATDbits.LATD5 = 0;
@@ -37,7 +36,7 @@ void send2displays(unsigned char value, unsigned char point_pip)
     hexCode = display7Scodes[digit_high];
     LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
   
-    if(point_pip == 1 && value % 2 == 1)
+    if(dec_point == 1)
       LATBbits.LATB15 = 1;
   }
 
