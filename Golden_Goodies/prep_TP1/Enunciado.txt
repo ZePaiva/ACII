@@ -1,0 +1,15 @@
+Ex1 (Assembly):
+  Fazer a sequência (0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0) em loop infinito nos leds.
+  Quando o DPSwitch 3 está a 1 a frequência é de 10 Hz, caso contrário é 1,25Hz.
+
+Ex2 (C):
+  a)
+    Ler o valor ADC do potenciometro com polling e fazer o diplay high variar entre 0 e F consoante o valor lido.
+    A frequência de conversão e de atualização do display é igual a 10Hz
+
+  b)
+    Ler o valor ADC do potenciometro com polling e fazer o valor nos displays variar entre 0 e 70 consoante o valor lido.
+    A frequência de conversão deve ser de 5Hz e de atualização dos displays deve ser igual a 80Hz.
+
+  c)
+    O mesmo que na alinea b), mas com a utilização da RSI na vez de polling.
