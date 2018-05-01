@@ -50,3 +50,13 @@ void delay(int ms)
     while(readCoreTimer() < PBCLK/1000);
   }
 }
+
+void setPWM(unsigned int duty, int K, int sync)
+{
+  if (duty > 100)
+    return;
+  if (sync == 1)
+    OC1RS = ((K + 1) * duty) / 100;
+  else
+    OC1RS = (K * duty) / 100;
+}

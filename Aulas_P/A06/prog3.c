@@ -40,11 +40,8 @@ void _int_(27) isr_adc()
 {
   printInt(ADC1BUF0, 16 | 3 << 16);
   putChar('\n');
-  // reset conversions
   AD1CON1bits.ASAM = 1;
   IFS1bits.AD1IF = 0;
-
-  // set flag
   LATBbits.LATB6 = 1;
 }
 

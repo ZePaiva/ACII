@@ -4,6 +4,7 @@
 #define SAMPLES 8
 
 void IOConfig(void);
+void send2displays_this(unsigned char value, unsigned char dec_flag);
 
 volatile unsigned char voltage = 0;
 
@@ -15,7 +16,6 @@ int main(void)
     delay(10);
     if(++i == 25)
     {
-      // start conversion
       AD1CON1bits.ASAM = 1;
       i = 0;
     }
@@ -49,7 +49,7 @@ void IOConfig(void)
 
 void _int_(27) isr_adc()
 {
-  double buf_avg = 0;
+  int buf_avg = 0;
   int *bp = (int *)(&ADC1BUF0);
   int i;
   for(i = 0; i < SAMPLES; i++)
@@ -58,8 +58,43 @@ void _int_(27) isr_adc()
   }
   buf_avg /= SAMPLES;
   buf_avg = VOLTAGE(buf_avg);
-  buf_avg *= 10;
+  buf_avg;
   voltage = toBcd((char)buf_avg);
 
   IFS1bits.AD1IF = 0;
+}
+
+void send2displays_this(unsigned char value, unsigned char dec_flag)
+{
+  static const char display7Scodes[] = { 
+    0x3F, 0x06, 0x5B, 0X4F, 0x66, 0x6D, 0X7D, 0X07, 
+    0X7F, 0X6F, 0X77, 0X7C, 0X39, 0X5E, 0X79, 0X71
+  };
+
+  static char displayFlag = 0;
+  unsigned char digit_low = (value & 0x0F);
+  unsigned char digit_high = (value & 0xF0) >> 4;
+  char hexCode;
+
+  if (displayFlag)
+  {
+    LATDbits.LATD5 = 1;
+    LATDbits.LATD6 = 0;
+
+    hexCode = display7Scodes[digit_low];
+    LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
+  }
+  else
+  {
+    LATDbits.LATD5 = 0;
+    LATDbits.LATD6 = 1;
+
+    hexCode = display7Scodes[digit_high];
+    LATB = (LATB & 0x00FF) | ((int)hexCode << 8);
+    
+    if (dec_flag == 1)
+      LATBbits.LATB15 = 1;
+  }
+
+  displayFlag = !displayFlag;
 }
