@@ -13,11 +13,16 @@ Contém o ficheiro my_funcs.c (diretório pic32mx/include/) com:
 	
 	- funções:
 		- unsigned char toBcd (unsigned char value) -> converte de binário/hexadecimal para decimal
-		- void delay (int n) -> cria um atraso de n milissegundos 
+		- void delay (int n) -> cria um atraso de n milissegundos
 		- void send2displays( unsigned char value, unsigned char dec_point) -> envia os digitos para 
       os displays hexadecimais com a opção de colocar o ponto decimal
+
     - void setPWM( unsgined char duty_cycle, int K, int ssync) -> controla o duty cycle de um 
       sinal com base no duty dado [0-100], do valor do PR (K) e se o clock é ou não síncrono 
+
+    - void putString(char *str) -> reimplementação da função printStr(char *str)
+    - void putc(char c) -> reimplementação da função putChar(char c);
+    - char getc() -> reimplementação da função getChar();
 	- macros:
 		- VOLTAGE(V) obtem o valor da voltagem a partir da média dos valores analógicos
 

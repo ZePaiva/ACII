@@ -60,3 +60,66 @@ void setPWM(unsigned int duty, int K, int sync)
   else
     OC1RS = (K * duty) / 100;
 }
+
+void UART1Config(unsigned int baudrate, char parity, char data, char stopbits)
+{
+  if (baudrate > 115200 || baudrate < 600 ) baudrate = 115200;
+
+  if (data != 8 && data != 9) data = 8;
+
+  if (parity != 'N' && parity != 'E' && parity != 'O') parity = 'N';
+
+  if (stopbits != 1 && stopbits != 2) stopbits = 1;
+
+  U1BRG = (PBCLK + 8 * baudrate) / ( 16 * baudrate) - 1;
+  U1MODEbits.BRGH = 0;
+
+  if (data == 9) U1MODEbits.PDSEL = 3;
+  else
+  {
+    if (parity == 'N') U1MODEbits.PDSEL = 0;
+    else if (parity == 'E') U1MODEbits.PDSEL = 1;
+    else U1MODEbits.PDSEL = 2;
+  }
+
+  U1MODEbits.STSEL = stopbits - 1;
+
+  U1STAbits.UTXEN = 1;
+  U1STAbits.URXEN = 1;
+
+  U1MODEbits.ON = 1;
+  
+  IEC0bits.U1RXIE = 1;
+  IPC6bits.U1IP = 2;
+  IFS0bits.U1RXIF = 0;
+}
+
+void putString(char *strin)
+{
+  int i = 0;
+  while (strin[i] != '\0')
+  {
+    putc(strin[i++]);
+  }
+}
+
+void putc(char toSend)
+{
+  while(U1STAbits.UTXBF == 1);
+  U1TXREG = toSend;
+}
+
+char getc()
+{
+  if (U1STAbits.OERR == 1) U1STAbits.OERR = 0;
+  while(U1STAbits.URXDA == 0);
+  
+  char toDisc;
+  if (U1STAbits.FERR || U1STAbits.PERR)
+  {
+    toDisc = U1RXREG;
+    return 0;
+  }
+
+  return U1RXREG;
+}
