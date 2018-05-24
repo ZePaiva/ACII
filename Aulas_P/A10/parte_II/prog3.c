@@ -8,7 +8,8 @@ void IOConf(void);
 int getTemp(int *tmp);
 
 volatile unsigned char voltage = 0x00;
-volatile unsigned int temperature = 0x00;
+volatile unsigned int temperature = 0;
+volatile char can_get = 0;
 volatile char show = 0;
 int K1 = 19530;
 
@@ -42,6 +43,14 @@ int main()
       case 3:
         IEC0bits.T1IE = 1;
         duty = voltage * 3;
+        if (can_get)
+        {
+          getTemp(&temperature);
+          printStr("Temperatura -> ");
+          printInt10(temperature);
+          putChar('\n');
+          can_get = 0;
+        }
         setPWM(duty, K1, 1);
     }
   }
@@ -137,9 +146,6 @@ void _int_(12) isr_T3()
 void _int_(4) isr_T1()
 {
   AD1CON1bits.ASAM = 1;
-  getTemp(&temperature);
-  printStr("Temperatura -> ");
-  printInt10(temperature);
-  putChar('\n');
+  can_get = 1;
   IFS0bits.T1IF = 0;
 }
