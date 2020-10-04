@@ -133,3 +133,5 @@ void spi_init()
   SPI2STATbits.SPIROV = 0;
   SPI2CONbits.ON = 1;
 }
+
+//Happy hacktoberfest
